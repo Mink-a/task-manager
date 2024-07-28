@@ -1,0 +1,7 @@
+.bgMuted {
+  background-color: var(--mantine-color-gray-1);
+}
+
+.navItem {
+  border-radius: var(--mantine-radius-md);
+}

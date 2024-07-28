@@ -1,0 +1,14 @@
+.noWrap {
+  white-space: nowrap;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  background-color: var(--mantine-color-white);
+  box-shadow: var(--mantine-shadow-md);
+}
+
+.tableContainer {
+  height: calc(100vh - 16rem);
+}
