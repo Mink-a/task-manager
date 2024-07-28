@@ -2,6 +2,8 @@
 
 ## Getting Started
 
+Copy .env.example to .env to both api and frontend
+
 ### Prerequisites
 
 - Node.js 20.x
