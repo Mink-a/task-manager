@@ -21,7 +21,6 @@ export function TaskForm({ onSubmit, initialValues, onCancel }: TaskFormProps) {
   const userInfo = useLoginStore((state) => state.userInfo);
   const form = useForm<Task>({
     initialValues: initialValues ?? {
-      id: undefined,
       title: '',
       taskTypeId: null,
       userId: userInfo?.user.id,
@@ -68,8 +67,7 @@ export function CreateModalButton() {
   const [opened, { open, close }] = useDisclosure(false);
   const { mutate: createTask } = useCreateTaskMutation();
   const handleCreate = (values: Task) => {
-    const { id, ...task } = values;
-    createTask(task);
+    createTask(values);
     close();
   };
   return (

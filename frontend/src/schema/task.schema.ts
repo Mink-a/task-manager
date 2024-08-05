@@ -4,16 +4,16 @@ import { TaskType } from './task-type.schema';
 
 export const taskSchema = z
   .object({
-    id: z.number().optional(),
+    id: z.string().optional(),
     title: z.string().min(1, { message: 'Title is required!' }),
     taskTypeId: z.union([
-      z.coerce.number().min(1, { message: 'Task type is required!' }),
+      z.coerce.string().min(1, { message: 'Task type is required!' }),
       z.null(),
     ]),
     date: z.coerce.date(),
     startTime: z.string(),
     endTime: z.string(),
-    userId: z.union([z.coerce.number().min(1, { message: 'User is required!' }), z.undefined()]),
+    userId: z.union([z.coerce.string().min(1, { message: 'User is required!' }), z.undefined()]),
   })
   .superRefine((data, ctx) => {
     if (data.taskTypeId === null) {
@@ -33,8 +33,6 @@ export const taskSchema = z
   });
 
 export type Task = z.infer<typeof taskSchema>;
-
-export type CreateTask = Omit<Task, 'id'>;
 
 export type TaskWithUser = Task & {
   user: User;

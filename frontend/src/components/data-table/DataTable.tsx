@@ -57,6 +57,9 @@ export function DataTable<T extends MRT_RowData>({
     mantineTableContainerProps: { style: { maxHeight: 'calc(100vh - 16rem)' } },
     mantinePaperProps: { style: { height: '100%' } },
     mantineTableBodyCellProps: { style: { whiteSpace: 'nowrap' } },
+    mantineTableHeadCellProps: {
+      style: { whiteSpace: 'nowrap', backgroundColor: 'var(--mantine-color-gray-3)' },
+    },
     // pagination
     manualPagination: true,
     rowCount: total,

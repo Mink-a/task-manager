@@ -10,7 +10,7 @@ export function DashboardLayout() {
     <AppShell header={{ height: 60 }} navbar={{ width: 250, breakpoint: 'sm' }}>
       <Header />
       <Sidebar />
-      <AppShell.Main>
+      <AppShell.Main style={{ backgroundColor: 'var(--mantine-color-gray-0)' }}>
         <Outlet />
       </AppShell.Main>
     </AppShell>
