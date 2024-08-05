@@ -4,30 +4,48 @@ import { TASK_TYPES, USERS, TASKS } from "../data/mock-data";
 const prisma = new PrismaClient();
 
 async function seedTaskTypes() {
-  await prisma.taskType.createMany({
-    data: TASK_TYPES,
-  });
-  console.log("task-types seeded.");
+  return await Promise.all(
+    TASK_TYPES.map(type =>
+      prisma.taskType.upsert({
+        where: { name: type.name },
+        update: {},
+        create: type,
+      }),
+    ),
+  );
 }
 
 async function seedUsers() {
-  await prisma.user.createMany({
-    data: USERS,
-  });
-  console.log("users seeded.");
-}
-
-async function seedTasks() {
-  await prisma.task.createMany({
-    data: TASKS,
-  });
-  console.log("tasks seeded.");
+  return await Promise.all(
+    USERS.map(user =>
+      prisma.user.upsert({
+        where: { email: user.email },
+        update: {},
+        create: user,
+      }),
+    ),
+  );
 }
 
 async function main() {
-  await seedTaskTypes();
-  await seedUsers();
-  await seedTasks();
+  const taskTypes = await seedTaskTypes();
+  const users = await seedUsers();
+
+  const taskPromises = TASKS.map((task, i) => {
+    const userId = users[i % users.length].id;
+    const taskTypeId = taskTypes[i % taskTypes.length].id;
+    return prisma.task.create({
+      data: {
+        ...task,
+        userId,
+        taskTypeId,
+      },
+    });
+  });
+
+  await Promise.all(taskPromises);
+
+  console.log("Database has been seeded.");
 }
 
 main()
