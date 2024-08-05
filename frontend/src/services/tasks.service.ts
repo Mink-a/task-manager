@@ -23,7 +23,7 @@ export const updateTask = async (values: Task) => {
   return response.data;
 };
 
-export const deleteTask = async (id: number) => {
+export const deleteTask = async (id: string) => {
   const response = await axiosInstance.delete(`/tasks/${id}`);
   return response.data;
 };

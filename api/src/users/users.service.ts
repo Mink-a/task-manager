@@ -50,7 +50,7 @@ export class UsersService {
     };
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {
         id,
@@ -69,7 +69,7 @@ export class UsersService {
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: {
         id,
@@ -79,7 +79,7 @@ export class UsersService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.user.delete({
       where: {
         id,

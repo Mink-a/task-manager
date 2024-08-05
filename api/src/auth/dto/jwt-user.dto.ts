@@ -1,5 +1,5 @@
 export class JwtUserDto {
   loginId: string;
-  id: number;
+  id: string;
   role: string;
 }

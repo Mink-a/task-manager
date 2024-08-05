@@ -6,7 +6,7 @@ export class UserEntity implements User {
   role: string;
 
   @ApiProperty({ description: "Unique identifier for the user" })
-  id: number;
+  id: string;
 
   @ApiProperty({ description: "Login ID for the user" })
   loginId: string;

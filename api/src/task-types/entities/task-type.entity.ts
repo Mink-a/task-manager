@@ -12,5 +12,5 @@ export class TaskTypeEntity implements TaskType {
     description: "The id of the task type",
     example: 1,
   })
-  id: number;
+  id: string;
 }

@@ -74,7 +74,7 @@ export const useDeleteTaskTypeMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => deleteTaskType(id),
+    mutationFn: (id: string) => deleteTaskType(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: taskType.lists(),
