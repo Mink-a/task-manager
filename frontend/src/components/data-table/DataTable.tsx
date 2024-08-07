@@ -29,7 +29,7 @@ export function DataTable<T extends MRT_RowData>({
   isLoading?: boolean;
   renderRowActions?: (row: MRT_Row<T>) => React.ReactNode;
 }) {
-  const { setParams } = useParamsHelper();
+  const { setParams, getParams } = useParamsHelper();
 
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
@@ -37,7 +37,7 @@ export function DataTable<T extends MRT_RowData>({
   });
 
   useEffect(() => {
-    setParams({ _page: pagination.pageIndex, _per_page: pagination.pageSize });
+    setParams({ ...getParams(), _page: pagination.pageIndex, _per_page: pagination.pageSize });
   }, [pagination]);
 
   const table = useMantineReactTable({
@@ -57,6 +57,9 @@ export function DataTable<T extends MRT_RowData>({
     mantineTableContainerProps: { style: { maxHeight: 'calc(100vh - 16rem)' } },
     mantinePaperProps: { style: { height: '100%' } },
     mantineTableBodyCellProps: { style: { whiteSpace: 'nowrap' } },
+    mantineTableHeadCellProps: {
+      style: { whiteSpace: 'nowrap', backgroundColor: 'var(--mantine-color-gray-3)' },
+    },
     // pagination
     manualPagination: true,
     rowCount: total,

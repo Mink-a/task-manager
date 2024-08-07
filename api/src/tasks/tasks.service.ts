@@ -4,6 +4,7 @@ import { UpdateTaskDto } from "./dto/update-task.dto";
 import { PrismaService } from "src/common/prisma/prisma.service";
 import { TaskQueryDto } from "./dto/task-query.dto";
 import { JwtUserDto } from "src/auth/dto/jwt-user.dto";
+import { Prisma } from "@prisma/client";
 
 @Injectable()
 export class TasksService {
@@ -15,28 +16,49 @@ export class TasksService {
   }
 
   async findAll(queryParams: TaskQueryDto, user: JwtUserDto) {
-    const { _page = 0, _per_page = 10, _search } = queryParams;
+    console.log(user, user.role.name);
+    const { _page = 0, _per_page = 10, _search, _user, _fromDate, _toDate } = queryParams;
     const skip = +_page * _per_page;
     const take = +_per_page;
-    const or = _search
-      ? {
-          OR: [{ title: { contains: _search } }],
-          AND: user.role === "admin" ? [] : [{ user: { id: user.id } }],
-        }
-      : user.role === "admin"
-        ? {}
-        : { AND: [{ user: { id: user.id } }] };
+
+    // Construct the where clause dynamically based on available filters
+    const where: Prisma.TaskWhereInput = {};
+    const orderBy: Prisma.TaskOrderByWithRelationInput[] = [{ date: "desc" }];
+
+    if (_search) {
+      where.OR = [
+        { title: { contains: _search } },
+        {
+          User: { username: { contains: _search } },
+        },
+      ];
+    }
+
+    if (_fromDate && _toDate) {
+      where.date = {
+        gte: new Date(_fromDate),
+        lte: new Date(_toDate),
+      };
+    }
+
+    if (_user) {
+      where.userId = { equals: _user };
+    }
 
     const tasks = await this.prisma.task.findMany({
       skip,
       take,
-      where: or,
+      where,
+      orderBy,
       include: {
-        taskType: true,
+        TaskType: true,
+        User: true, // Assuming you also want to include user data
       },
     });
 
-    const total = await this.prisma.task.count({ where: or });
+    const total = await this.prisma.task.count({
+      where,
+    });
 
     return {
       data: tasks,
@@ -48,18 +70,18 @@ export class TasksService {
     };
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.task.findUnique({
       where: {
         id: id,
       },
       include: {
-        user: true,
+        User: true,
       },
     });
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
+  update(id: string, updateTaskDto: UpdateTaskDto) {
     console.log(updateTaskDto);
     return this.prisma.task.update({
       where: {
@@ -69,7 +91,7 @@ export class TasksService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.task.delete({
       where: {
         id: id,

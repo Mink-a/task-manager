@@ -19,4 +19,25 @@ export class TaskQueryDto {
     required: false,
   })
   _search?: string;
+
+  @ApiProperty({
+    description: "Filter by a specific field",
+    example: "",
+    required: false,
+  })
+  _user?: string;
+
+  @ApiProperty({
+    description: "Filter by a specific field",
+    example: "",
+    required: false,
+  })
+  _fromDate?: string;
+
+  @ApiProperty({
+    description: "Filter by a specific field",
+    example: "",
+    required: false,
+  })
+  _toDate?: string;
 }

@@ -9,36 +9,108 @@ datasource db {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id       String @id @default(uuid())
   loginId  String @unique
   username String
-  password String
-  role     String @default("user") // user, editor, admin
-  phone    String
-  email    String @unique
-  tasks    Task[]
+  deptCode String @default("NONE")
+  // relations
+  Tasks    Task[]
+  roleId   String
+  Role     Role   @relation(fields: [roleId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("users")
 }
 
+// role is like user, editor, admin
+model Role {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  // relations
+  Users       User[]
+  Permissions Permission[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("roles")
+}
+
+// action is like read, update, delete
+model Action {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  // relations
+  Permissions Permission[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("actions")
+}
+
+// menu is like user, task, task-type
+model Menu {
+  id          String       @id @default(uuid())
+  name        String       @unique
+  // relations
+  Permissions Permission[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@map("menus")
+}
+
+// permission is role access to menu:actions,
+// user role can task:read,update,delete
+// editor role can task:read,update,delete / task-type:read
+// admin role can task:read,update,delete / task-type:read,update,delete,create / user:read,update,delete,create
+model Permission {
+  id       String @id @default(uuid())
+  roleId   String
+  actionId String
+  menuId   String
+  // relations
+  Role     Role   @relation(fields: [roleId], references: [name], onDelete: Cascade)
+  Action   Action @relation(fields: [actionId], references: [name], onDelete: Cascade)
+  Menu     Menu   @relation(fields: [menuId], references: [name], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
+
+  @@unique([roleId, menuId, actionId])
+  @@map("permissions")
+}
+
 model Task {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   title      String
-  taskType   TaskType @relation(fields: [taskTypeId], references: [id])
-  taskTypeId Int
   date       DateTime
   startTime  String
   endTime    String
-  user       User     @relation(fields: [userId], references: [id])
-  userId     Int
+  // relations
+  TaskType   TaskType @relation(fields: [taskTypeId], references: [id])
+  taskTypeId String
+  User       User     @relation(fields: [userId], references: [id])
+  userId     String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("tasks")
 }
 
 model TaskType {
-  id    Int    @id @default(autoincrement())
-  name  String
-  tasks Task[]
+  id    String @id @default(uuid())
+  name  String @unique
+  // relations
+  Tasks Task[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt() @map("updated_at")
 
   @@map("task_types")
 }

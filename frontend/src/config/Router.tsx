@@ -6,6 +6,9 @@ import { TasksPage } from '@/pages/tasks/Task.page';
 import { TaskTypesPage } from '@/pages/task-types/TaskType.page';
 import { LoginPage } from '@/pages/auth/Login.page';
 import { RootLayout } from '@/Layouts/RootLayout';
+import { ActionsPage } from '@/pages/actions/Action.page';
+import { RolesPage } from '@/pages/roles/Role.page';
+import { MenusPage } from '@/pages/menus/Menu.page';
 
 const router = createBrowserRouter([
   { path: '/', element: <RootLayout /> },
@@ -32,6 +35,18 @@ const router = createBrowserRouter([
       {
         path: 'task-types',
         element: <TaskTypesPage />,
+      },
+      {
+        path: 'roles',
+        element: <RolesPage />,
+      },
+      {
+        path: 'actions',
+        element: <ActionsPage />,
+      },
+      {
+        path: 'menus',
+        element: <MenusPage />,
       },
     ],
   },

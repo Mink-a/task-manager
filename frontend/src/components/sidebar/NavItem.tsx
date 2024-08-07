@@ -13,17 +13,18 @@ interface NavItemProps {
   to?: string;
   children?: NavItemProps[];
   scopes?: string[];
+  page?: string;
 }
 
 export function NavItem(props: NavItemProps) {
-  const { children, icon: Icon, label, to, scopes = [] } = props;
+  const { children, icon: Icon, label, to, scopes = [], page } = props;
   const location = useLocation();
   const close = useDrawer((state) => state.close);
   const [opened, navLink] = useDisclosure(children?.some((x) => x.to === location.pathname));
 
   if (!children && to) {
     return (
-      <PermissionsGate scopes={scopes} errorProps={{ disabled: true }}>
+      <PermissionsGate page={page} scopes={scopes} errorProps={{ disabled: true }}>
         <NavLink
           className={classes.navItem}
           component={Link}

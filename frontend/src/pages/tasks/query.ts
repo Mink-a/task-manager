@@ -19,7 +19,7 @@ export const useCreateTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (values: Omit<Task, 'id'>) => createTask(values),
+    mutationFn: (values: Task) => createTask(values),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: task.lists(),
@@ -72,7 +72,7 @@ export const useDeleteTaskMutation = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: number) => deleteTask(id),
+    mutationFn: (id: string) => deleteTask(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: task.lists(),

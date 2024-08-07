@@ -14,6 +14,24 @@ export class UsersService {
     });
   }
 
+  async createOrUpdate(createUserDto: CreateUserDto) {
+    const user = await this.prisma.user.upsert({
+      where: {
+        loginId: createUserDto.loginId,
+      },
+      update: {
+        deptCode: createUserDto.deptCode,
+      },
+      create: {
+        loginId: createUserDto.loginId,
+        username: createUserDto.username,
+        deptCode: createUserDto.deptCode,
+        roleId: createUserDto.roleId,
+      },
+    });
+    return user;
+  }
+
   async findAll(queryParams: UserQueryDto) {
     const { _page = 0, _per_page = 10, _search } = queryParams;
     const skip = +_page * _per_page;
@@ -26,18 +44,11 @@ export class UsersService {
     const users = await this.prisma.user.findMany({
       skip,
       take,
-      where: {
-        ...or,
-      },
-      omit: {
-        password: true,
-      },
+      where: or,
     });
 
     const total = await this.prisma.user.count({
-      where: {
-        ...or,
-      },
+      where: or,
     });
 
     return {
@@ -50,13 +61,17 @@ export class UsersService {
     };
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.user.findUnique({
       where: {
         id,
       },
-      omit: {
-        password: true,
+      include: {
+        Role: {
+          include: {
+            Permissions: true,
+          },
+        },
       },
     });
   }
@@ -66,20 +81,22 @@ export class UsersService {
       where: {
         loginId,
       },
+      include: {
+        Role: true,
+      },
     });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: string, updateUserDto: UpdateUserDto) {
     return this.prisma.user.update({
       where: {
         id,
       },
       data: updateUserDto,
-      omit: { password: true },
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.user.delete({
       where: {
         id,

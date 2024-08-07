@@ -93,7 +93,7 @@ export function UpdateModalButton({ prevValues }: { prevValues: TaskType }) {
   );
 }
 
-export function DeleteModalButton({ id }: { id: number }) {
+export function DeleteModalButton({ id }: { id: string }) {
   const [opened, { open, close }] = useDisclosure(false);
   const { mutate: deleteTask } = useDeleteTaskTypeMutation();
 

@@ -1,5 +1,5 @@
 export class JwtUserDto {
   loginId: string;
-  id: number;
-  role: string;
+  id: string;
+  role: Record<string, unknown>;
 }

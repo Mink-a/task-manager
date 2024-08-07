@@ -1,24 +1,34 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Transform } from "class-transformer";
+import { IsString, IsDateString, IsNotEmpty } from "class-validator";
 
 export class CreateTaskDto {
-  @ApiProperty({ description: "Title of the task", example: "Meeting with team" })
-  title: string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  readonly title: string;
 
-  @ApiProperty({ description: "Date of the task", example: "2021-01-01T00:00:00.000Z" })
-  date: Date;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  readonly taskTypeId: string;
 
-  @ApiProperty({ description: "Start time of the task", example: "2021-01-01T19:00:00.000Z" })
-  startTime: string;
+  @IsNotEmpty()
+  @IsDateString()
+  @ApiProperty()
+  readonly date: string;
 
-  @ApiProperty({ description: "End time of the task", example: "2021-01-01T20:00:00.000Z" })
-  endTime: string;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  readonly startTime: string;
 
-  @ApiProperty({ description: "ID of the user associated with the task", example: 1 })
-  @Transform(({ value }) => parseInt(value, 10))
-  userId: number;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  readonly endTime: string;
 
-  @ApiProperty({ description: "ID of the task type", example: 1 })
-  @Transform(({ value }) => parseInt(value, 10))
-  taskTypeId: number;
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  readonly userId: string;
 }

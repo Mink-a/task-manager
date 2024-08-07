@@ -18,7 +18,7 @@ export const updateTaskType = async (taskType: TaskType) => {
   return response.data;
 };
 
-export const deleteTaskType = async (id: number) => {
+export const deleteTaskType = async (id: string) => {
   const response = await axiosInstance.delete(`/task-types/${id}`);
   return response.data;
 };

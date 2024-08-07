@@ -1,5 +1,7 @@
 import { MRT_ColumnDef } from 'mantine-react-table';
-import { Flex, Stack, Title } from '@mantine/core';
+import { ActionIcon, Flex, Group, Stack, Title } from '@mantine/core';
+import { Link } from 'react-router-dom';
+import { IconEye } from '@tabler/icons-react';
 import { PermissionsGate } from '@/components/common/permission-gate/PermissionGate';
 import { PAGE, SCOPES } from '@/config/permissions';
 import { DataTable } from '@/components/data-table/DataTable';
@@ -7,14 +9,15 @@ import { TableFilterInput } from '@/components/inputs/TableFilterInput';
 import { User } from '@/schema/users.schema';
 import { useGetUsersQuery } from './query';
 import { Error301Page } from '@/components/common/pages/Error301Page';
+import { UpdateModalButton } from './components/Form';
 
 const columns: MRT_ColumnDef<User>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-    id: 'id',
-    size: 100,
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'ID',
+  //   id: 'id',
+  //   size: 100,
+  // },
   {
     accessorKey: 'loginId',
     header: 'Login ID',
@@ -28,21 +31,15 @@ const columns: MRT_ColumnDef<User>[] = [
     size: 200,
   },
   {
-    accessorKey: 'role',
+    accessorKey: 'Role.name',
     header: 'Role',
-    id: 'role',
+    id: 'Role.name',
     size: 100,
   },
   {
-    accessorKey: 'email',
-    header: 'Email',
-    id: 'email',
-    size: 200,
-  },
-  {
-    accessorKey: 'phone',
-    header: 'Phone',
-    id: 'phone',
+    accessorKey: 'deptCode',
+    header: 'Dept Code',
+    id: 'deptCode',
     size: 200,
   },
 ];
@@ -62,6 +59,24 @@ export function UsersPage() {
           columns={columns}
           data={data?.data ?? []}
           total={data?.meta.total_pages ?? 0}
+          renderRowActions={(row) => {
+            if (row.original && row.original.id) {
+              return (
+                <Group wrap="nowrap">
+                  <ActionIcon
+                    c="blue"
+                    variant="subtle"
+                    component={Link}
+                    to={`/d/tasks?_user=${row.original.id}`}
+                  >
+                    <IconEye />
+                  </ActionIcon>
+                  <UpdateModalButton prevValues={row.original} />
+                </Group>
+              );
+            }
+            return null;
+          }}
         />
       </Stack>
     </PermissionsGate>

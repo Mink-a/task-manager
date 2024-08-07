@@ -47,7 +47,7 @@ export class TaskTypesService {
     };
   }
 
-  findOne(id: number) {
+  findOne(id: string) {
     return this.prisma.taskType.findUnique({
       where: {
         id: id,
@@ -55,7 +55,7 @@ export class TaskTypesService {
     });
   }
 
-  update(id: number, updateTaskTypeDto: UpdateTaskTypeDto) {
+  update(id: string, updateTaskTypeDto: UpdateTaskTypeDto) {
     return this.prisma.taskType.update({
       where: {
         id: id,
@@ -66,7 +66,7 @@ export class TaskTypesService {
     });
   }
 
-  remove(id: number) {
+  remove(id: string) {
     return this.prisma.taskType.delete({
       where: {
         id: id,

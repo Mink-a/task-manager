@@ -2,24 +2,25 @@ import { Injectable } from "@nestjs/common";
 import { UsersService } from "src/users/users.service";
 import { JwtService } from "@nestjs/jwt";
 import { JwtUserDto } from "./dto/jwt-user.dto";
-import { UserEntity } from "src/users/entities/user.entity";
 import { RefreshDto } from "./dto/refresh.dto";
+import { AdService } from "./ad.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
     private jwtService: JwtService,
+    private adService: AdService,
   ) {}
 
-  async validateUser(loginId: string, pass: string): Promise<UserEntity> {
-    const user = await this.usersService.findByLoginId(loginId);
+  async validateUser(loginId: string, pass: string) {
+    const user = await this.adService.login({ loginId, password: pass });
 
-    if (user && user.password === pass) {
-      return user;
+    if (!user) {
+      return null;
     }
 
-    return null;
+    return user;
   }
 
   async login(user: JwtUserDto) {
@@ -36,7 +37,7 @@ export class AuthService {
     console.log(refreshToken, user);
     const foundUser = await this.usersService.findOne(user.id);
     if (foundUser) {
-      const payload = { loginId: foundUser.loginId, sub: foundUser.id, role: foundUser.role };
+      const payload = { loginId: foundUser.loginId, sub: foundUser.id, role: foundUser.Role };
       return {
         access_token: this.jwtService.sign(payload, { expiresIn: "7d" }),
         refresh_token: this.jwtService.sign(payload, { expiresIn: "30d" }),

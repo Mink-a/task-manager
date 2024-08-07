@@ -35,7 +35,7 @@ export class TaskTypesController {
   @ApiResponse({ status: 200, description: "Return the task type.", type: TaskTypeEntity })
   @ApiResponse({ status: 404, description: "Task type not found." })
   findOne(@Param("id") id: string) {
-    return this.taskTypesService.findOne(+id);
+    return this.taskTypesService.findOne(id);
   }
 
   @Patch(":id")
@@ -43,7 +43,7 @@ export class TaskTypesController {
   @ApiResponse({ status: 200, description: "The task type has been successfully updated.", type: TaskTypeEntity })
   @ApiResponse({ status: 404, description: "Task type not found." })
   update(@Param("id") id: string, @Body() updateTaskTypeDto: UpdateTaskTypeDto) {
-    return this.taskTypesService.update(+id, updateTaskTypeDto);
+    return this.taskTypesService.update(id, updateTaskTypeDto);
   }
 
   @Delete(":id")
@@ -51,6 +51,6 @@ export class TaskTypesController {
   @ApiResponse({ status: 200, description: "The task type has been successfully deleted." })
   @ApiResponse({ status: 404, description: "Task type not found." })
   remove(@Param("id") id: string) {
-    return this.taskTypesService.remove(+id);
+    return this.taskTypesService.remove(id);
   }
 }

@@ -5,10 +5,10 @@ export const ROLES = {
 };
 
 export const SCOPES = {
-  canCreate: 'can-create',
-  canEdit: 'can-edit',
-  canDelete: 'can-delete',
-  canView: 'can-view',
+  canCreate: 'create',
+  canEdit: 'update',
+  canDelete: 'delete',
+  canView: 'view',
 };
 
 export const PAGE = {
@@ -16,19 +16,7 @@ export const PAGE = {
   tasks: 'tasks',
   users: 'users',
   taskTypes: 'task-types',
-};
-
-export const PERMISSIONS = {
-  [ROLES.user]: {
-    [PAGE.dashboard]: [SCOPES.canView],
-    [PAGE.tasks]: [SCOPES.canView, SCOPES.canCreate, SCOPES.canEdit, SCOPES.canDelete],
-    [PAGE.users]: [],
-    [PAGE.taskTypes]: [],
-  },
-  [ROLES.admin]: {
-    [PAGE.dashboard]: [SCOPES.canView],
-    [PAGE.tasks]: [SCOPES.canView, SCOPES.canCreate, SCOPES.canEdit, SCOPES.canDelete],
-    [PAGE.users]: [SCOPES.canView, SCOPES.canCreate, SCOPES.canEdit, SCOPES.canDelete],
-    [PAGE.taskTypes]: [SCOPES.canView, SCOPES.canCreate, SCOPES.canEdit, SCOPES.canDelete],
-  },
+  roles: 'roles',
+  actions: 'actions',
+  menus: 'menus',
 };

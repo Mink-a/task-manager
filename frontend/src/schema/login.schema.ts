@@ -1,10 +1,10 @@
 import { z } from 'zod';
-import { User } from './users.schema';
+import { UserWithRolePermissions } from './users.schema';
 
 export type Login = z.infer<typeof loginSchema>;
 
 export type LoginResponse = {
-  user: User;
+  user: UserWithRolePermissions;
   access_token: string;
   refresh_token: string;
 };

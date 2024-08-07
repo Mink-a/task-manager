@@ -37,7 +37,7 @@ export class TasksController {
   @ApiResponse({ status: 200, description: "Return the task.", type: TaskEntity })
   @ApiResponse({ status: 404, description: "Task not found." })
   findOne(@Param("id") id: string) {
-    return this.tasksService.findOne(+id);
+    return this.tasksService.findOne(id);
   }
 
   @Patch(":id")
@@ -45,7 +45,7 @@ export class TasksController {
   @ApiResponse({ status: 200, description: "Task successfully updated.", type: TaskEntity })
   @ApiResponse({ status: 404, description: "Task not found." })
   update(@Param("id") id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.tasksService.update(+id, updateTaskDto);
+    return this.tasksService.update(id, updateTaskDto);
   }
 
   @Delete(":id")
@@ -53,6 +53,6 @@ export class TasksController {
   @ApiResponse({ status: 200, description: "Task successfully deleted." })
   @ApiResponse({ status: 404, description: "Task not found." })
   remove(@Param("id") id: string) {
-    return this.tasksService.remove(+id);
+    return this.tasksService.remove(id);
   }
 }

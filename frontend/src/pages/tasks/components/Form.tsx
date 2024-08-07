@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useForm, zodResolver } from '@mantine/form';
 import { DatePickerInput } from '@mantine/dates';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { Task, taskSchema, TaskWithTaskType } from '@/schema/task.schema';
+import { Task, taskSchema, TaskWithTaskTypeAndUser } from '@/schema/task.schema';
 import { TaskTypeSelect } from '@/components/inputs/TaskTypeSelect';
 import { TimePickerInput } from '@/components/inputs/TimePickerInput';
 import { useLoginStore } from '@/store/login.store';
@@ -21,7 +21,6 @@ export function TaskForm({ onSubmit, initialValues, onCancel }: TaskFormProps) {
   const userInfo = useLoginStore((state) => state.userInfo);
   const form = useForm<Task>({
     initialValues: initialValues ?? {
-      id: undefined,
       title: '',
       taskTypeId: null,
       userId: userInfo?.user.id,
@@ -68,8 +67,7 @@ export function CreateModalButton() {
   const [opened, { open, close }] = useDisclosure(false);
   const { mutate: createTask } = useCreateTaskMutation();
   const handleCreate = (values: Task) => {
-    const { id, ...task } = values;
-    createTask(task);
+    createTask(values);
     close();
   };
   return (
@@ -79,14 +77,16 @@ export function CreateModalButton() {
       </Modal>
 
       <PermissionsGate page={PAGE.tasks} scopes={[SCOPES.canCreate]}>
-        <Button onClick={open}>Add Task</Button>
+        <Button onClick={open} ml="auto">
+          Add Task
+        </Button>
       </PermissionsGate>
     </>
   );
 }
 
-export function UpdateModalButton({ prevValues }: { prevValues: TaskWithTaskType }) {
-  const { taskType, ...prevTask } = prevValues;
+export function UpdateModalButton({ prevValues }: { prevValues: TaskWithTaskTypeAndUser }) {
+  const { User, TaskType, ...prevTask } = prevValues;
   const [opened, { open, close }] = useDisclosure(false);
   const { mutate: updateTask } = useUpdateTaskMutation();
 
@@ -110,7 +110,7 @@ export function UpdateModalButton({ prevValues }: { prevValues: TaskWithTaskType
   );
 }
 
-export function DeleteModalButton({ id }: { id: number }) {
+export function DeleteModalButton({ id }: { id: string }) {
   const [opened, { open, close }] = useDisclosure(false);
   const { mutate: deleteTask } = useDeleteTaskMutation();
 

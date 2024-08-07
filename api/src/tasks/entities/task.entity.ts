@@ -3,14 +3,20 @@ import { Task } from "@prisma/client";
 import { UserEntity } from "src/users/entities/user.entity";
 
 export class TaskEntity implements Task {
+  @ApiProperty({ description: "Date of the task", example: "2021-01-01T00:00:00.000Z" })
+  createdAt: Date;
+
+  @ApiProperty({ description: "Date of the task", example: "2021-01-01T00:00:00.000Z" })
+  updatedAt: Date;
+
   @ApiProperty({ description: "Unique identifier for the task", example: 1 })
-  id: number;
+  id: string;
 
   @ApiProperty({ description: "Title of the task", example: "Meeting with team" })
   title: string;
 
   @ApiProperty({ description: "ID of the task type", example: 1 })
-  taskTypeId: number;
+  taskTypeId: string;
 
   @ApiProperty({ description: "Date of the task", example: "2021-01-01T00:00:00.000Z" })
   date: Date;
@@ -22,7 +28,7 @@ export class TaskEntity implements Task {
   endTime: string;
 
   @ApiProperty({ description: "ID of the user associated with the task", example: 1 })
-  userId: number;
+  userId: string;
 
   @ApiProperty({
     description: "",
