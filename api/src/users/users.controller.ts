@@ -26,7 +26,6 @@ export class UsersController {
   @ApiOperation({ summary: "Get all users" })
   @ApiResponse({ status: 200, description: "Successfully retrieved list of users.", type: UserEntity, isArray: true })
   findAll(@Query() queryParams: UserQueryDto) {
-    console.log(queryParams);
     return this.usersService.findAll(queryParams);
   }
 

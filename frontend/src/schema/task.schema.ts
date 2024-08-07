@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { User } from './users.schema';
 import { TaskType } from './task-type.schema';
+import { User } from './users.schema';
 
 export const taskSchema = z
   .object({
@@ -34,10 +34,11 @@ export const taskSchema = z
 
 export type Task = z.infer<typeof taskSchema>;
 
-export type TaskWithUser = Task & {
-  user: User;
+export type TaskWithTaskType = Task & {
+  TaskType: TaskType;
 };
 
-export type TaskWithTaskType = Task & {
-  taskType: TaskType;
+export type TaskWithTaskTypeAndUser = Task & {
+  TaskType: TaskType;
+  User: User;
 };

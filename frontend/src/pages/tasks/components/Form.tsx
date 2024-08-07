@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { useForm, zodResolver } from '@mantine/form';
 import { DatePickerInput } from '@mantine/dates';
 import { IconEdit, IconTrash } from '@tabler/icons-react';
-import { Task, taskSchema, TaskWithTaskType } from '@/schema/task.schema';
+import { Task, taskSchema, TaskWithTaskTypeAndUser } from '@/schema/task.schema';
 import { TaskTypeSelect } from '@/components/inputs/TaskTypeSelect';
 import { TimePickerInput } from '@/components/inputs/TimePickerInput';
 import { useLoginStore } from '@/store/login.store';
@@ -77,14 +77,16 @@ export function CreateModalButton() {
       </Modal>
 
       <PermissionsGate page={PAGE.tasks} scopes={[SCOPES.canCreate]}>
-        <Button onClick={open}>Add Task</Button>
+        <Button onClick={open} ml="auto">
+          Add Task
+        </Button>
       </PermissionsGate>
     </>
   );
 }
 
-export function UpdateModalButton({ prevValues }: { prevValues: TaskWithTaskType }) {
-  const { taskType, ...prevTask } = prevValues;
+export function UpdateModalButton({ prevValues }: { prevValues: TaskWithTaskTypeAndUser }) {
+  const { User, TaskType, ...prevTask } = prevValues;
   const [opened, { open, close }] = useDisclosure(false);
   const { mutate: updateTask } = useUpdateTaskMutation();
 

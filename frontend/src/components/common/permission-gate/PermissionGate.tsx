@@ -1,6 +1,6 @@
 import { cloneElement, ReactElement } from 'react';
-import { PERMISSIONS } from '@/config/permissions';
 import { useLoginStore } from '@/store/login.store';
+import { useCan } from '@/hooks/useCan';
 
 interface PageProps {
   children: ReactElement;
@@ -13,14 +13,17 @@ interface PageProps {
 export function PermissionsGate({
   children,
   scopes = [],
-  page = 'tasks',
+  page = '',
   errorProps = null,
   RenderError = () => <></>,
 }: PageProps) {
-  const userInfo = useLoginStore((state) => state.userInfo);
-  const role = userInfo?.user.role || 'user';
+  const role = useLoginStore((state) => state.userInfo?.user.Role.name) || 'user';
+  const rolePermissionsMap = useCan();
   const rolePermissions =
-    PERMISSIONS[role] && PERMISSIONS[role][page] ? PERMISSIONS[role][page] : [];
+    rolePermissionsMap?.[role] && rolePermissionsMap?.[role][page]
+      ? rolePermissionsMap?.[role][page]
+      : [];
+
   const permissionGranted = scopes.every((permission) => rolePermissions.includes(permission));
 
   if (!permissionGranted && !errorProps) return <RenderError />;

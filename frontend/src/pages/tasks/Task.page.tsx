@@ -5,12 +5,14 @@ import { SCOPES } from '@/config/permissions';
 import { DataTable } from '@/components/data-table/DataTable';
 import { TableFilterInput } from '@/components/inputs/TableFilterInput';
 import { useGetTasksQuery } from './query';
-import { TaskWithTaskType } from '@/schema/task.schema';
+import { TaskWithTaskTypeAndUser } from '@/schema/task.schema';
 import { CreateModalButton, DeleteModalButton, UpdateModalButton } from './components/Form';
 import { DateCell, TimeCell } from '@/components/data-table/CustomCell';
 import { Error301Page } from '@/components/common/pages/Error301Page';
+import { UsersSelect } from '@/components/inputs/UsersSelect';
+import { DateRangeFilter } from '@/components/inputs/DateRangeFilter';
 
-const columns: MRT_ColumnDef<TaskWithTaskType>[] = [
+const columns: MRT_ColumnDef<TaskWithTaskTypeAndUser>[] = [
   {
     accessorKey: 'title',
     header: 'Task Title',
@@ -18,9 +20,14 @@ const columns: MRT_ColumnDef<TaskWithTaskType>[] = [
     size: 100,
   },
   {
-    accessorKey: 'taskType.name',
+    accessorKey: 'TaskType.name',
     header: 'Task Type',
-    id: 'taskType.name',
+    id: 'TaskType.name',
+  },
+  {
+    accessorKey: 'User.username',
+    header: 'User',
+    id: 'User.username',
   },
   {
     accessorKey: 'startTime',
@@ -58,6 +65,8 @@ export function TasksPage() {
           <Title order={2}>Task List</Title>
           <Group>
             <CreateModalButton />
+            <DateRangeFilter />
+            <UsersSelect />
             <TableFilterInput />
           </Group>
         </Flex>

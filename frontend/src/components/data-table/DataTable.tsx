@@ -29,7 +29,7 @@ export function DataTable<T extends MRT_RowData>({
   isLoading?: boolean;
   renderRowActions?: (row: MRT_Row<T>) => React.ReactNode;
 }) {
-  const { setParams } = useParamsHelper();
+  const { setParams, getParams } = useParamsHelper();
 
   const [pagination, setPagination] = useState<MRT_PaginationState>({
     pageIndex: 0,
@@ -37,7 +37,7 @@ export function DataTable<T extends MRT_RowData>({
   });
 
   useEffect(() => {
-    setParams({ _page: pagination.pageIndex, _per_page: pagination.pageSize });
+    setParams({ ...getParams(), _page: pagination.pageIndex, _per_page: pagination.pageSize });
   }, [pagination]);
 
   const table = useMantineReactTable({

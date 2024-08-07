@@ -10,12 +10,12 @@ import { Error301Page } from '@/components/common/pages/Error301Page';
 import { CreateModalButton, DeleteModalButton, UpdateModalButton } from './components/Form';
 
 const columns: MRT_ColumnDef<TaskType>[] = [
-  {
-    accessorKey: 'id',
-    header: 'ID',
-    id: 'id',
-    size: 100,
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'ID',
+  //   id: 'id',
+  //   size: 100,
+  // },
   {
     accessorKey: 'name',
     header: 'Name',

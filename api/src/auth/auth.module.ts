@@ -7,6 +7,8 @@ import { PassportModule } from "@nestjs/passport";
 import { LocalStrategy } from "./strategy/local.strategy";
 import { JwtStrategy } from "./strategy/jwt.strategy";
 import { JwtRefreshStrategy } from "./strategy/jwt-refresh.strategy";
+import { AdService } from "./ad.service";
+import { RolesService } from "src/roles/roles.service";
 
 @Module({
   imports: [
@@ -18,7 +20,7 @@ import { JwtRefreshStrategy } from "./strategy/jwt-refresh.strategy";
       signOptions: { expiresIn: "1h" },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy],
+  providers: [AdService, RolesService, AuthService, LocalStrategy, JwtStrategy, JwtRefreshStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

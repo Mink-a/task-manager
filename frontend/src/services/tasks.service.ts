@@ -1,8 +1,8 @@
-import { Task, TaskWithTaskType } from '@/schema/task.schema';
+import { Task, TaskWithTaskTypeAndUser } from '@/schema/task.schema';
 import { axiosInstance } from '@/utils/axios';
 
 export const getTasks = async (params?: Record<string, unknown>) => {
-  const response = await axiosInstance.get<ApiListResponse<TaskWithTaskType>>('/tasks', {
+  const response = await axiosInstance.get<ApiListResponse<TaskWithTaskTypeAndUser>>('/tasks', {
     params,
   });
   return response.data;
