@@ -20,6 +20,11 @@ export class AdService {
       const userDetails = await this.usersService.findByLoginId("000000");
       return userDetails;
     }
+
+    if (data.loginId === "909090" && data.password === "password") {
+      const userDetails = await this.usersService.findByLoginId("909090");
+      return userDetails;
+    }
     // ----test user end----
 
     const resp = await this.authenticate(data.loginId, data.password);

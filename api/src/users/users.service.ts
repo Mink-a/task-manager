@@ -45,6 +45,9 @@ export class UsersService {
       skip,
       take,
       where: or,
+      include: {
+        Role: true,
+      },
     });
 
     const total = await this.prisma.user.count({
